@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Html from</title>
+</head>
+<body>
+    <form>  
+     <fieldset>  
+        <label>Choose expenceamount</label> 
+        <input type="number" name="amount"> 
+         <label>choose description</label>
+         <input type="text" name="decp"> 
+         <label>Choose a category</label>  
+         <input type="search" name="cate">    
+         <input type="submit" value="Add Expence">  
+     </fieldset>  
+     </form>
+     <div id="expenseList"></div>
+
+</body>
+<script type="text/javascript">
+  // Get the form element
+  var form = document.querySelector("form");
+
+  // Load the expense list from local storage
+  var expenseList = JSON.parse(localStorage.getItem("expenses")) || [];
+
+  // Display the expense list on the screen
+  var expenseListDiv = document.getElementById("expenseList");
+  expenseListDiv.innerHTML = "";
+  for (var i = 0; i < expenseList.length; i++) {
+      var expense = expenseList[i];
+      var expenseDiv = document.createElement("div");
+      expenseDiv.innerHTML = "<p>" + expense.amount + " - " + expense.decp + " - " + expense.cate + "</p>";
+      expenseListDiv.appendChild(expenseDiv);
+  }
+
+  // Add a submit event listener to the form
+  form.addEventListener("submit", function(e) {
+
+      e.preventDefault();
+
+      var amount= form.querySelector("input[name='amount']");
+      var decp = form.querySelector("input[name='decp']");
+      var cate = form.querySelector("input[name='cate']");
+      
+      // Create an object to store the expense details
+      var expense = {
+          amount: amount.value,
+          decp: decp.value,
+          cate: cate.value
+      };
+      
+      // Add the expense to the expense list
+      expenseList.push(expense);
+
+      // Store the updated expense list in local storage
+      localStorage.setItem("expenses", JSON.stringify(expenseList));
+
+      // Display the updated expense list on the screen
+      var expenseDiv = document.createElement("div");
+      expenseDiv.innerHTML = "<ul><li><p>" + expense.amount + " - " + expense.decp + " - " + expense.cate + "</p></li></ul>";
+      expenseListDiv.appendChild(expenseDiv);
+
+      // Reset the form
+      form.reset();
+  });
+  for (var i = 0; i < expenseList.length; i++) {
+  var expense = expenseList[i];
+  var expenseDiv = document.createElement("div");
+  expenseDiv.innerHTML = "<p>" + expense.amount + " - " + expense.decp + " - " + expense.cate + "</p>";
+  
+  // create edit and delete buttons
+  var editBtn = document.createElement("button");
+  editBtn.innerHTML = "Edit";
+  var deleteBtn = document.createElement("button");
+  deleteBtn.innerHTML = "Delete";
+  
+  // add click event listeners to the buttons
+  editBtn.addEventListener("click", function() {
+    // code to edit the expense item
+  });
+  deleteBtn.addEventListener("click", function() {
+    // code to delete the expense item
+  });
+  
+  // append the buttons to the expense div
+  expenseDiv.appendChild(editBtn);
+  expenseDiv.appendChild(deleteBtn);
+  
+  expenseListDiv.appendChild(expenseDiv);
+}
+  editBtn.addEventListener("click", function() {
+  // get the index of the expense item
+  var index = expenseList.indexOf(expense);
+  
+  // prompt the user for updated details
+  var updatedAmount = prompt("Enter updated amount:", expense.amount);
+  var updatedDecp = prompt("Enter updated description:", expense.decp);
+  var updatedCate = prompt("Enter updated category:", expense.cate);
+  
+  // update the expense item
+  expenseList[index].amount = updatedAmount;
+  expenseList[index].decp = updatedDecp;
+  expenseList[index].cate = updatedCate;
+  
+  // update the display and local storage
+  localStorage.setItem("expenses", JSON.stringify(expenseList));
+  expenseDiv.innerHTML = "<p>" + updatedAmount + " - " + updatedDecp + " - " + updatedCate + "</p>";
+});
+
+deleteBtn.addEventListener("click", function() {
+  // get the index of the expense item
+  var index = expenseList.indexOf(expense);
+  
+  // remove the expense item
+  expenseList.splice(index, 1);
+  
+  // update the display and local storage
+  localStorage.setItem("expenses", JSON.stringify(expenseList));
+  expenseListDiv.removeChild(expenseDiv);
+});
+</script>
+  
+  
+</html>
